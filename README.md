@@ -22,23 +22,52 @@ The data is from 1997 to 2024; each month within each each year has price imput 
 ## Select Needed Columns From Data in Python
 Often times, not all the columns in the dataframe are usefull for ones analysis; so, for easier handling of the data table, one can select only necessary columns. ***".loc"*** could be used as in the code below or the [double square bracket method](https://pandas.pydata.org/docs/user_guide/indexing.html) can also be used. 
 ``` Python
-needed_cols = data.loc[:["Data", "New York Statewide Average ($/gal)"]] # ":" selected all the rows and "Data" and "New York Statewide Average ($/gal)"   
-                                                                        # were the columns selected.
+needed_cols = data.loc[:["Data", "New York Statewide Average ($/gal)"]] # ":" selected all the rows and "Data" and
+                                                                          # "New York Statewide Average ($/gal)"   
+                                                                             # were the columns selected.
 ```
 ## Change Column Name in Python
 This is usually done to rename the columns. In this case I will love to rename the columns to change all the characters to lower case and also to shorten the names.
 ``` Python
-needed_cols = data.rename(column = {"Data":"data", "New York Statewide Average ($/gal)":"ny_st_avg"}]
+needed_cols = data.rename(column = {"Data":"data", "New York Statewide Average ($/gal)":"ny_st_avg ($/gal)"}]
 ```
 ## Working with Date in Python
-I will break my date column into Month and year using Pandas [Pandas.to_datetime](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html) you can also check [Python datetime](https://docs.python.org/3/library/datetime.html#module-datetime) for additional knowledge.
+I will break my date column into Month and year using Pandas [Pandas.to_datetime](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html) you can also check [Python datetime](https://docs.python.org/3/library/datetime.html#module-datetime) for additional knowledge. Although some IDE might work with datetime without first importing datetime, it is better to import datetime to be on the saver side.
 I first convert the date to Pandas datetime and then create new columns for the months and the years.
 ``` Python
+from datetime import datetime
 needed_cols.date = pd.to_datetime(needed_cols.date)
 needed_cols["month"], needed_cols["year"] = needed_cols.date.dt.month, needed_cols.date.dt.month
 ```
 ## Histogram
-I will use hitogram to view the shape of the data but befote then, I have to import another library for visualization.
+I will use histogram to view the shape of the data but befote then, I have to import another library for visualization. 
+``` Python
+import matplotlib.pyplot as p
+import seaborn as s
+s.histplot(needed_cols, x="ny_st_avg ($/gal)", bins=20, element="step")
+p.show()
+```
+![Histogram of Average Price Between 1997 to 2024](Path to image)
+
+The chart shows the price on the x-axis and its frequencies on the y-axis. It is right  skewed i.e. price mostly move towards right side of the chart and it's bi-modal- it has two peak periods. I would lay a density curve on the chart to ascertain the bi-modal shape.
+## Density Curve
+``` Python
+s.histplot(needed_cols, x="ny_st_avg ($/gal)", bins=20, element="step", kde=True)
+p.show()
+```
+![Bi_modal Density Chart of Price](Path to image)
+## DEnsity Curve without bars or Elements
+For better clarity, I will view the modal density shape without the bars or elements.
+``` Python
+s.displot(needed_cols, x="ny_st_avg ($/gal)", kind = "kde"
+p.show()
+```
+![Bi_modal Curve](Path to image)
+
+## Box Plot
+I will examine the average price within each year with box plot.
+
+
 
 To updated and cotinued
  
