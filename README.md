@@ -56,7 +56,7 @@ s.histplot(needed_cols, x="ny_st_avg ($/gal)", bins=20, element="step", kde=True
 p.show()
 ```
 ![Bi_modal Density Chart of Price](Path to image)
-## DEnsity Curve without bars or Elements
+## Density Curve without bars or Elements
 For better clarity, I will view the modal density shape without the bars or elements.
 ``` Python
 s.displot(needed_cols, x="ny_st_avg ($/gal)", kind = "kde"
