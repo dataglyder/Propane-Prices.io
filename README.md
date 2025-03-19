@@ -9,15 +9,20 @@ To analyze data in Python, we must first import the necessary ***libraries***. S
 ## Open Data File with Pandas
 First import Pandas
 ``` Python
-import pandas as pd        # pandas starts with a lower case "p" and pd is just an alias for pandas.
+import pandas as pd        
 data = pd.read_csv("file name or file path")
-print(data.head())           # Use display/print to view the whole data table or data.head() to view first 5 rows.
-print(data.isnull().sum())     # To see total missing values
+print(data.head())           # Use display/print to view the whole table or display/print(data.head()) to view first 5 rows.
 ```
-![Alt Text](Path to image)
+![Alt Text](head)
+
 The data is from 1997 to 2024; each month within each each year has price imput of at least 2 i.e., at the beggining and at the end of the month. I will not fill-in each month with its average price in other to have a full month because:
-**1** there is no indication of missing values
-**2** this will not change the average price of each month.
+**1** There is no indication of missing values
+**2** This will not change the average price of each month.
+
+```Python
+print(data.isnull().sum())     # To confirm that no value was missing.
+```
+![Alt Text](isnul)
 
 ## Select Needed Columns From Data in Python
 Often times, not all the columns in the dataframe are usefull for ones analysis; so, for easier handling of the data table, one can select only necessary columns. ***".loc"*** could be used as in the code below or the [double square bracket method](https://pandas.pydata.org/docs/user_guide/indexing.html) can also be used. 
@@ -27,7 +32,7 @@ needed_cols = data.loc[:["Data", "New York Statewide Average ($/gal)"]] # ":" se
                                                                              # were the columns selected.
 ```
 ## Change Column Name in Python
-This is usually done to rename the columns. In this case I will love to rename the columns to change all the characters to lower case and also to shorten the names.
+This is usually done to rename the columns. In this case, I will rename the columns to change all the characters to lower case and also to shorten the names.
 ``` Python
 needed_cols = data.rename(column = {"Data":"data", "New York Statewide Average ($/gal)":"ny_st_avg ($/gal)"}]
 ```
@@ -39,6 +44,10 @@ from datetime import datetime
 needed_cols.date = pd.to_datetime(needed_cols.date)
 needed_cols["month"], needed_cols["year"] = needed_cols.date.dt.month, needed_cols.date.dt.month
 ```
+Here is what the new table look  like:
+![Cleaned tabled]()
+
+Now that the data is ready, let's start the analysis.
 ## Histogram
 I will use histogram to view the shape of the data but befote then, I have to import another library for visualization. 
 ``` Python
