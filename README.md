@@ -13,7 +13,7 @@ import pandas as pd
 data = pd.read_csv("file name or file path")
 print(data.head())           # Use display/print to view the whole table or display/print(data.head()) to view first 5 rows.
 ```
-![Alt Text](head)
+![first five rows](https://github.com/dataglyder/Propane-Prices.io/blob/main/head.png)
 
 The data is from 1997 to 2024; each month within each each year has price imput of at least 2 i.e., at the beggining and at the end of the month. I will not fill-in each month with its average price in other to have a full month because:
 **1** There is no indication of missing values
@@ -22,7 +22,7 @@ The data is from 1997 to 2024; each month within each each year has price imput 
 ```Python
 print(data.isnull().sum())     # To confirm that no value was missing.
 ```
-![Alt Text](isnul)
+![confirm empty data](https://github.com/dataglyder/Propane-Prices.io/blob/main/isnul.png)
 
 ## Select Needed Columns From Data in Python
 Often times, not all the columns in the dataframe are usefull for ones analysis; so, for easier handling of the data table, one can select only necessary columns. ***".loc"*** could be used as in the code below or the [double square bracket method](https://pandas.pydata.org/docs/user_guide/indexing.html) can also be used. 
@@ -37,28 +37,30 @@ This is usually done to rename the columns. In this case, I will rename the colu
 needed_cols = data.rename(column = {"Data":"data", "New York Statewide Average ($/gal)":"ny_st_avg ($/gal)"}]
 ```
 ## Working with Date in Python
-I will break my date column into Month and year using Pandas [Pandas.to_datetime](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html) you can also check [Python datetime](https://docs.python.org/3/library/datetime.html#module-datetime) for additional knowledge. Although some IDE might work with datetime without first importing datetime, it is better to import datetime to be on the saver side.
-I first convert the date to Pandas datetime and then create new columns for the months and the years.
+Let's split the date column into Month and year using Pandas [Pandas.to_datetime](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html) additonal information is available on  [Python datetime](https://docs.python.org/3/library/datetime.html#module-datetime). Although some IDE might work with datetime without first importing datetime, it is better to import datetime to be on the saver side.
+I first converted the date to Pandas datetime and then create new columns for the months and the years.
 ``` Python
 from datetime import datetime
 needed_cols.date = pd.to_datetime(needed_cols.date)
 needed_cols["month"], needed_cols["year"] = needed_cols.date.dt.month, needed_cols.date.dt.month
 ```
 Here is what the new table look  like:
-![Cleaned tabled]()
+
+![Cleaned tabled](https://github.com/dataglyder/Propane-Prices.io/blob/main/cleaned_table.png)
 
 Now that the data is ready, let's start the analysis.
 ## Histogram
-I will use histogram to view the shape of the data but befote then, I have to import another library for visualization. 
+We'll view the shape of the data but befote then, let's import another library for visualization. 
 ``` Python
 import matplotlib.pyplot as p
 import seaborn as s
+hist_chart=p.figure(figsize=(6,5), layout="constrained")
 s.histplot(needed_cols, x="ny_st_avg ($/gal)", bins=20, element="step")
 p.show()
 ```
-![Histogram of Average Price Between 1997 to 2024](Path to image)
+![Histogram of Average Price Between 1997 to 2024](https://github.com/dataglyder/Propane-Prices.io/blob/main/Hist_of_data.png)
 
-The chart shows the price on the x-axis and its frequencies on the y-axis. It is right  skewed i.e. price mostly move towards right side of the chart and it's bi-modal- it has two peak periods. I would lay a density curve on the chart to ascertain the bi-modal shape.
+The chart shows the price on the x-axis and its frequencies on the y-axis. It is right  skewed i.e. price mostly move towards right side of the chart and it looks like it's bi-modal i.e., has two peak periods. I would lay a density curve on the chart to ascertain the bi-modal shape.
 ## Density Curve
 ``` Python
 s.histplot(needed_cols, x="ny_st_avg ($/gal)", bins=20, element="step", kde=True)
