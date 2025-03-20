@@ -34,7 +34,8 @@ needed_cols = data.loc[:["Data", "New York Statewide Average ($/gal)"]] # ":" se
 ## Change Column Name in Python
 This is usually done to rename the columns. In this case, I will rename the columns to change all the characters to lower case and also to shorten the names.
 ``` Python
-needed_cols = data.rename(column = {"Data":"data", "New York Statewide Average ($/gal)":"ny_st_avg ($/gal)"}]
+needed_cols = data.rename(column = {"old_name1":"new_name1", "old_name2":"new_name2"}]
+needed_cols = data.rename(column={"Data":"data", "New York Statewide Average ($/gal)":"ny_state_avg_price ($/gal)"})
 ```
 ## Working with Date in Python
 Let's split the date column into Month and year using Pandas [Pandas.to_datetime](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html) additonal information is available on  [Python datetime](https://docs.python.org/3/library/datetime.html#module-datetime). Although some IDE might work with datetime without first importing datetime, it is better to import datetime to be on the saver side.
@@ -52,32 +53,62 @@ Now that the data is ready, let's start the analysis.
 ## Histogram
 We'll view the shape of the data but befote then, let's import another library for visualization. 
 ``` Python
-import matplotlib.pyplot as p
+import matplotlib.pyplot as m
 import seaborn as s
 hist_chart=p.figure(figsize=(6,5), layout="constrained")
-s.histplot(needed_cols, x="ny_st_avg ($/gal)", bins=20, element="step")
-p.show()
+s.histplot(needed_cols, x="ny_state_avg_price ($/gal)", bins=20, element="step")
+m.ylabel("frequncy")
+m.show()
 ```
 ![Histogram of Average Price Between 1997 to 2024](https://github.com/dataglyder/Propane-Prices.io/blob/main/Hist_of_data.png)
 
-The chart shows the price on the x-axis and its frequencies on the y-axis. It is right  skewed i.e. price mostly move towards right side of the chart and it looks like it's bi-modal i.e., has two peak periods. I would lay a density curve on the chart to ascertain the bi-modal shape.
+The chart shows the price on the x-axis and its frequencies on the y-axis. It is right  skewed i.e. price mostly move towards right side of the chart and it looks like it's bi-modal i.e., has two peak periods. Let's lay a density curve on the chart to ascertain the bi-modal shape.
+
 ## Density Curve
+Density curve summarises the approximate shape and the pattern a data distribution.
 ``` Python
-s.histplot(needed_cols, x="ny_st_avg ($/gal)", bins=20, element="step", kde=True)
-p.show()
+s.histplot(needed_cols, x="ny_state_avg_price ($/gal)", bins=20, element="step", kde=True)
+m.show()
 ```
 ![Bi_modal Density Chart of Price](Path to image)
 ## Density Curve without bars or Elements
 For better clarity, I will view the modal density shape without the bars or elements.
 ``` Python
-s.displot(needed_cols, x="ny_st_avg ($/gal)", kind = "kde"
-p.show()
+s.displot(needed_cols, x="ny_state_avg_price ($/gal)", kind = "kde"
+m.show()
 ```
 ![Bi_modal Curve](Path to image)
 
-## Box Plot
-I will examine the average price within each year with box plot.
+The distribution appears to be bi-modal, one peak at around price $1.5 and another peak period around price $3.0
 
+## Box Plot
+Let's examine the average price within each year with box plot.
+
+```Python
+fig, ax=m.subplots(figsize=(10,8))
+s.boxplot(x=renamed_df["year"], y=["ny_state_avg_price ($/gal)"]
+ax.ticks_params(rotation=90)
+m.show()
+```
+![boxplot](path)
+The boxplot summarises the price for each year.The "T" extensions show the minimum (bottom) and maximumm (top) price for the year. The horizontal line that cut through the box indicate the median for the year. The spade shape around the box indicate [outliers](). There seems to have been some relieve in the past: price drop in 2002 after the increase in 2001,it also drop in 2009 after a preceeding consistent hike in price and the most recent in hike was in 2022 before a bit of relief in 2023 and 2024. 
+
+## Statistical Analysis
+Let's take some sample and carryout statistical analysis on the sample. Year 2003 and 2004 are very recent; are there any sigificant difference between their price? Let's check with a T- statistics. You can check my write up on [traditional way of conductiong statistical analysis](). Let's quickly run it with Python here.
+
+**Let's state our hypothesis**
+
+**Null hypothsis $`H_{0}`$**: Propane price in 2024 was higher than 2023; $`\mu_{1} > \mu_{2}`$
+
+**Alternamte hypothesis $`H_{1}`$** Propane price in 2024 was not higher than 2023 $`\mu_{1} \leq\mu_{2}`$
+
+Now, let's import the necesarry library before we cotinue.
+```Python
+import scipy.stats
+
+
+
+ 
 
 
 To updated and cotinued
