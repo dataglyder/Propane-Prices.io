@@ -146,7 +146,7 @@ m.ylabel("price")
 
 ```
 ![scatter_plot](![Uploading image.png…](https://github.com/dataglyder/Propane-Prices.io/blob/main/scatterplot.png)
-)
+
 
 Each point on the scatter plot represent price from from its corresponding day. Now, let's fit the regression line to the scatter plot to visualize how many points will fall exactly on the line or be closser to the line.
 
@@ -177,9 +177,9 @@ The correlation is positive because it's greater than zero (0) and it's very str
 
 ## Regression Equation
 
-$`y = m + cx`$ could be rewritten as:
+***$`y = m + cx`$ could be rewritten as:***
 
-$` price = intercept + slope(day)
+***$` price = intercept + slope(day)`$***
 
 Since we have our regression chart, we can estimate the intercept and the coefficient  from it or calculte them. Let's do the latter.
 ```Python
@@ -190,8 +190,50 @@ print("coefficient = ", coeffi, "intercept = ", intercet)
 ```
 ![coeffandinter](https://github.com/dataglyder/Propane-Prices.io/blob/main/coeff_an_interc.png)
 
-To updated and cotinued
+Now that we have our slope and intercept, the regression equation from which our regression model is formed becomes:
+
+## Regression Model
+price = 1.7929 + 0.0017(day)
+This is developed from regression equation and our calculated variables like the intercept and coeficient.
+
+So, if we pick a day say day 200, we can check the price for that particular day i.e., $`price = 1.7929 + 0.0017(200) which is approximately ($2.13)`$. But, this is from day in the present. How about the future?
+
+## Predicting the Future with Linear Regression
+Our linear regression chart stops where the days ends(i.e., last day of Dec. 2024) we can extend the day to how many days we want in 2025 by extending the regression line to the right as in:
+```Python
+import numpy as n
+last_day_in_2024 = from_2000["day"].max()     # the value is 931
+future_daz_in_2025 = np.append(from_2000["day], n.arange(932, 1022))
+
+```
+Future days in 2025 were estimated (i.e., extended to the end of March 2025) with "future_daz_in_2025". Now we can estimate the price propane on first day of 2025 or last day in the month of March as in:
+
+first_day_of_2025 = 1.7929 + 932(0.0017) = $3.38
+
+last_day_of_March_2025 = 1.7929 + 1021(0.0017) = $3.52
+
+## The Uncertain Future; Predicting with Training and Test Set
+It's easier to extend the rregression line and extrapolate for the future; but is the future really this predictable? Can we ascertain that the future would follow the extrapolated data? The answer is obvious - no. One way to go about this is to split the historical data into training(usually 70%-80% of data) and test sets (30%-20%). The training set would be used in the model while the test set would be used to varify how the data would perform on an unseen future data.
+```Python
+x_train = from_2000.loc[0:740, ["day"]].values.reshape(-1,1)
+y_train = from_2000.loc[0:740, ["ny_state_avg_price"]].values.reshape(-1,1)
+x_test = from_2000.loc[741:932, ["day"]]
+regression.fit(x_train, y_train)
+print("coefficient = ", reg.coef_, "intercept =", reg.intercept_)
+```
+![traini_coef_inter](https://github.com/dataglyder/Propane-Prices.io/blob/main/traini_coef_interc.png)
+
+Now that we have the coefficient and intercept from the training set, we can generate a training model and test our test set (assumed future data) on it to guess and prepare our model for the uncertain future.
+
+price = 1.711 + 0.0021(any day in the test set)    # let's try day 783
+price_target_future = 1.711 + 0.0021(783) = $3.36
+
+
+## Conclusion 
+Yes! Consumers have enjoyed some reduction in price after increment according to this analyssis and maybe possibly in the futrue. Price is expected to flunctuate as days pass by; the estimates into the future are just guide into what is expected, there is no guanratee that price will increase linearly but training our model can help it prepare for any future data. 
+
+
  
-https://github.com/dataglyder/Basic-Python-Libraries.io
+
 
 
