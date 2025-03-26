@@ -115,7 +115,7 @@ import scipy.stats
 sig_test = scipy.stats.ttest_ind(yr_2023_sample["ny_state_avg_price"], yr_2024_sample["ny_state_avg_price"])
 print(sig_test)
 ```
-![image](https://github.com/dataglyder/Propane-Prices.io/blob/main/sig_test.png)
+![image](https://github.com/dataglyder/Propane-Prices.io/blob/main/.png)
 
 Let's assume we are using confidence level of 95%, our level of significance alpha $`\alpha`$ will be 0.05. Since our calculated p-value (0.2635  is greater than our chosen $`\alpha`$ (0.05) we will fail to reject the null hypothesis. Therefore, there is no significant difference between the price of propane in 2023 and 2024.
 
@@ -145,7 +145,8 @@ m.ylabel("price")
                             
 
 ```
-![scatter_plot]()
+![scatter_plot](![Uploading image.png…](https://github.com/dataglyder/Propane-Prices.io/blob/main/scatterplot.png)
+)
 
 Each point on the scatter plot represent price from from its corresponding day. Now, let's fit the regression line to the scatter plot to visualize how many points will fall exactly on the line or be closser to the line.
 
@@ -163,14 +164,15 @@ m.plot(x,predict_y
 m.show()
 
 ```
-![reg_analysis]()
+![reg_analysis](https://github.com/dataglyder/Propane-Prices.io/blob/main/linear_reg_day.png)
 
 The regression line travels from left to right indicating a positive correlation. For instance, as the days progress the price somewhat increase. Let's confrim the correlation
 ```Python
 correlation = from_2000["day"].corr(from_2000["ny_state_avg_price"])
 print("correlation =", correlation)
 ```
-![cor]()
+![cor](https://github.com/dataglyder/Propane-Prices.io/blob/main/cor.png)
+
 The correlation is positive because it's greater than zero (0) and it's very strong because it's more than 0.5
 
 ## Regression Equation
@@ -186,7 +188,7 @@ coeffi = regression.coef_
 intercet = regression.intercept_
 print("coefficient = ", coeffi, "intercept = ", intercet)
 ```
-![coeffandinter]()
+![coeffandinter](https://github.com/dataglyder/Propane-Prices.io/blob/main/coeff_an_interc.png)
 
 To updated and cotinued
  
