@@ -35,7 +35,7 @@ needed_cols = data.loc[:["Data", "New York Statewide Average ($/gal)"]] # ":" se
 This is usually done to rename the columns. In this case, I will rename the columns to change all the characters to lower case and also to shorten the names.
 ``` Python
 needed_cols = data.rename(column = {"old_name1":"new_name1", "old_name2":"new_name2"}]
-needed_cols = data.rename(column={"Data":"data", "New York Statewide Average ($/gal)":"ny_state_avg_price ($/gal)"})
+needed_cols = data.rename(column={"Data":"data", "New York Statewide Average ($/gal)":"ny_state_avg_price"})
 ```
 ## Working with Date in Python
 Let's split the date column into Month and year using Pandas [Pandas.to_datetime](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html) additonal information is available on  [Python datetime](https://docs.python.org/3/library/datetime.html#module-datetime). Although some IDE might work with datetime without first importing datetime, it is better to import datetime to be on the saver side.
@@ -56,7 +56,7 @@ We'll view the shape of the data but befote then, let's import another library f
 import matplotlib.pyplot as m
 import seaborn as s
 hist_chart=p.figure(figsize=(6,5), layout="constrained")
-s.histplot(needed_cols, x="ny_state_avg_price ($/gal)", bins=20, element="step")
+s.histplot(needed_cols, x="ny_state_avg_price", bins=20, element="step")
 m.ylabel("frequncy")
 m.show()
 ```
@@ -67,17 +67,17 @@ The chart shows the price on the x-axis and its frequencies on the y-axis. It is
 ## Density Curve
 Density curve summarises the approximate shape and the pattern a data distribution.
 ``` Python
-s.histplot(needed_cols, x="ny_state_avg_price ($/gal)", bins=20, element="step", kde=True)
+s.histplot(needed_cols, x="ny_state_avg_price", bins=20, element="step", kde=True)
 m.show()
 ```
-![Bi_modal Density Chart of Price](Path to image)
+![Bi_modal Density Chart of Price](https://github.com/dataglyder/Propane-Prices.io/blob/main/density_c_wit_chart.png)
 ## Density Curve without bars or Elements
 For better clarity, I will view the modal density shape without the bars or elements.
 ``` Python
-s.displot(needed_cols, x="ny_state_avg_price ($/gal)", kind = "kde"
+s.displot(needed_cols, x="ny_state_avg_price", kind = "kde"
 m.show()
 ```
-![Bi_modal Curve](Path to image)
+![Bi_modal Curve](https://github.com/dataglyder/Propane-Prices.io/blob/main/density_c_witht_chart.png)
 
 The distribution appears to be bi-modal, one peak at around price $1.5 and another peak period around price $3.0
 
@@ -86,11 +86,11 @@ Let's examine the average price within each year with box plot.
 
 ```Python
 fig, ax=m.subplots(figsize=(10,8))
-s.boxplot(x=renamed_df["year"], y=["ny_state_avg_price ($/gal)"]
+s.boxplot(x=needed_cols["year"], y=["ny_state_avg_price"]
 ax.ticks_params(rotation=90)
 m.show()
 ```
-![boxplot](path)
+![boxplot](https://github.com/dataglyder/Propane-Prices.io/blob/main/boxplot.png)
 The boxplot summarises the price for each year.The "T" extensions show the minimum (bottom) and maximumm (top) price for the year. The horizontal line that cut through the box indicate the median for the year. The spade shape around the box indicate [outliers](). There seems to have been some relieve in the past: price drop in 2002 after the increase in 2001,it also drop in 2009 after a preceeding consistent hike in price and the most recent in hike was in 2022 before a bit of relief in 2023 and 2024. 
 
 ## Statistical Analysis
@@ -98,21 +98,98 @@ Let's take some sample and carryout statistical analysis on the sample. Year 200
 
 **Let's state our hypothesis**
 
-**Null hypothsis $`H_{0}`$**: Propane price in 2024 was higher than 2023; $`\mu_{1} > \mu_{2}`$
+**Null hypothsis $`H_{0}`$**: There is no significant difference between the price of propane in 2023 and 2024; $`\mu_{2023} = \mu_{2024}`$
 
-**Alternamte hypothesis $`H_{1}`$** Propane price in 2024 was not higher than 2023 $`\mu_{1} \leq\mu_{2}`$
+**Alternamte hypothesis $`H_{1}`$** There is significance difference between the price of propane in 2023 and 2024 $`\mu_{2023}\neq\mu_{20}`$
 
-Now, let's import the necesarry library before we cotinue.
+Now, let's filter the needed years before we import the necesarry library.
+## Filter Columns in python
+```Python
+filtered_column = data[data["column"].isin([value/"sting" to be filtered])
+yr_2023_sample = needed_cols[needed_cols["year"].isin([2023]).sample(n=25, random_satate=42)
+yr_2024_sample = needed_cols[needed_cols["year"].isin([2024]).sample(n=25, random_state=42)
+```
+We just filtered year 2023 and 2024 from the dataframe and took 25 random samples from each year. This sample is sensitive to randomness hence the use of random.state to fodster reproduibility The use of another value for random.state might might alter the result and not using random_state at all might even generate opposite result to mine.
 ```Python
 import scipy.stats
+sig_test = scipy.stats.ttest_ind(yr_2023_sample["ny_state_avg_price"], yr_2024_sample["ny_state_avg_price"])
+print(sig_test)
+```
+![image](https://github.com/dataglyder/Propane-Prices.io/blob/main/sig_test.png)
 
+Let's assume we are using confidence level of 95%, our level of significance alpha $`\alpha`$ will be 0.05. Since our calculated p-value (0.2635  is greater than our chosen $`\alpha`$ (0.05) we will fail to reject the null hypothesis. Therefore, there is no significant difference between the price of propane in 2023 and 2024.
 
+## Regression Analysis
+Regression analysis is used to predict how a change in variable x might cause a change in variable y. I will be using linear regression and it could be expressed  mathematically as $`y=m+cx.
+where:
 
- 
+y = dependent variable in this analysis, the "price"
 
+x = independent variable in this analysis, the "day"
+
+c= coefficient of x or the slope or change in x
+
+m= is the intercept i.e point at which the regression line meets the y-axis
+
+Before we move forward, it is important to establish that the fact that y change (**correlate**) when there is change in x does not means that x is the root cause of change in y; hence the popular saying ***correlation does not equal causation***.
+
+Linear Regression in simple graphical representation is just scatter plot combine with line graph. We'll use regression to see how change in years might have influnce change in price between 2000 to 2024.
+## Scatter Plot
+```Python
+from_2000 = pd.DataFrame(needed_cols[needed_cols["year"]>1999])    #filter the needed years
+from_2000["day"] = [daz for daz in range(len(from_2000))           # Days in those years that are selected
+fig, ax=m.subplots(figsize=(6,8))
+m.scatter(from_2000["day"],from_2000["ny_state_avg_price"])
+m.xlabel("day")
+m.ylabel("price")
+                            
+
+```
+![scatter_plot]()
+
+Each point on the scatter plot represent price from from its corresponding day. Now, let's fit the regression line to the scatter plot to visualize how many points will fall exactly on the line or be closser to the line.
+
+## Scatter Plot + Line Plot = Linear Regression Chart
+```Python
+import sklearn
+from sklearn.linear_model, import LinearRegression
+# Reshape necessary columns to 2-D to facilitate analysis
+x=from_2000.day.values.reshape(-1,1)
+y=from_2000.ny_state_avg_price.values.reshape(-1,1)
+regression = LinearRegression()
+regression.fit(x,y)
+predict_y=reg.predict(x)
+m.plot(x,predict_y
+m.show()
+
+```
+![reg_analysis]()
+
+The regression line travels from left to right indicating a positive correlation. For instance, as the days progress the price somewhat increase. Let's confrim the correlation
+```Python
+correlation = from_2000["day"].corr(from_2000["ny_state_avg_price"])
+print("correlation =", correlation)
+```
+![cor]()
+The correlation is positive because it's greater than zero (0) and it's very strong because it's more than 0.5
+
+## Regression Equation
+
+$`y = m + cx`$ could be rewritten as:
+
+$` price = intercept + slope(day)
+
+Since we have our regression chart, we can estimate the intercept and the coefficient  from it or calculte them. Let's do the latter.
+```Python
+regression.fit(x,y)
+coeffi = regression.coef_
+intercet = regression.intercept_
+print("coefficient = ", coeffi, "intercept = ", intercet)
+```
+![coeffandinter]()
 
 To updated and cotinued
  
-
+https://github.com/dataglyder/Basic-Python-Libraries.io
 
 
