@@ -115,7 +115,7 @@ import scipy.stats
 sig_test = scipy.stats.ttest_ind(yr_2023_sample["ny_state_avg_price"], yr_2024_sample["ny_state_avg_price"])
 print(sig_test)
 ```
-![image](https://github.com/dataglyder/Propane-Prices.io/blob/main/.png)
+![image](https://github.com/dataglyder/Propane-Prices.io/blob/main/sig_test_with_rand_ts.png)
 
 Let's assume we are using confidence level of 95%, our level of significance alpha $`\alpha`$ will be 0.05. Since our calculated p-value (0.2635  is greater than our chosen $`\alpha`$ (0.05) we will fail to reject the null hypothesis. Therefore, there is no significant difference between the price of propane in 2023 and 2024.
 
