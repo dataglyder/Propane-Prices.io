@@ -86,12 +86,54 @@ Let's examine the average price within each year with box plot.
 
 ```Python
 fig, ax=m.subplots(figsize=(10,8))
-s.boxplot(x=needed_cols["year"], y=["ny_state_avg_price"]
-ax.ticks_params(rotation=90)
+s.boxplot(x=needed_cols["year"], y=["ny_state_avg_price"])
+ax.tick_params(rotation=90)
 m.show()
 ```
 ![boxplot](https://github.com/dataglyder/Propane-Prices.io/blob/main/boxplot.png)
+
 The boxplot summarises the price for each year.The "T" extensions show the minimum (bottom) and maximumm (top) price for the year. The horizontal line that cut through the box indicate the median for the year. The spade shape around the box indicate [outliers](). There seems to have been some relieve in the past: price drop in 2002 after the increase in 2001,it also drop in 2009 after a preceeding consistent hike in price and the most recent in hike was in 2022 before a bit of relief in 2023 and 2024. 
+
+## Bar Chart
+I will like to summarise the average price per year with a bar cahrt.
+```Python
+import numpy as np           
+ave = round(needed_cols.groupby(["year"])["ny_state_avg_price"].mean().reset_index(),2)   # return unique table of yr with selected price column rounded to 2 decimal places.
+fig, ax=m.subplots(figsize=(6,8))
+m.bar(ave["year"],np.log(ave["ny_state_avg_price"]))      # "np.log" transformed the prices into logarithmic values
+ax.xlabel("years")
+ax.ylabel("Log of Average Prices $/gal")
+m.show()
+```
+![bar]()
+
+The prices are in log format so that the bars could be displayed distinctively. The real values could be estimated by taking the exponential of the displayed y-axis value. E.g. 1.2 as np.exp(1.2) is approximately 3.32
+
+## Dashboard
+We can summarise all the exploratory charts into dashboard for easier visual.
+```Python
+
+fig, axes=m.subplots(2,2, figsize(6,8))
+
+s.histplot(needed_cols, x="ny_state_avg_price", bins=20, element="step", ax=axes[0,0])
+axes[0,0].set_title(Shape of Propane Prices from 1997 to 2024)
+
+s.histplot(needed_cols, x="ny_state_avg_price", bins=20, element="step", kde=True, ax=axes[0,1])
+axes[0,1].set_title(Density Curve of the Shape of Propane Price from 1997 to 2024)
+
+s.boxplot(x=needed_cols["year"], y=["ny_state_avg_price"], ax=axes[1,0])
+axes[1,0].tick_params(rotation=90)
+axes[1,0].set_xlabel("Years")
+axes[1,0].set_ylabel(Propane Price $/gal)
+
+axes[1,1].bar(avg["year],np.log(avg["ny_state_avg_price"]))
+axes[1,1].set_title("Logarithmic Price of Propane Price from 1997 to 2024)
+axes[1,1].set_xlabel("Year")
+axes[1,1].set_ylabel(Logarithim of Average Price of Propane")
+
+m.tight_layout()
+m.show()
+```
 
 ## Statistical Analysis
 Let's take some sample and carryout statistical analysis on the sample. Year 2003 and 2004 are very recent; are there any sigificant difference between their price? Let's check with a T- statistics. You can check my write up on [traditional way of conductiong statistical analysis](). Let's quickly run it with Python here.
