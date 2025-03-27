@@ -92,7 +92,7 @@ m.show()
 ```
 ![boxplot](https://github.com/dataglyder/Propane-Prices.io/blob/main/boxplot.png)
 
-The boxplot summarises the price for each year.The "T" extensions show the minimum (bottom) and maximumm (top) price for the year. The horizontal line that cut through the box indicate the median for the year. The spade shape around the box indicate [outliers](). There seems to have been some relieve in the past: price drop in 2002 after the increase in 2001,it also drop in 2009 after a preceeding consistent hike in price and the most recent in hike was in 2022 before a bit of relief in 2023 and 2024. 
+The boxplot summarises the price for each year.The "T" extensions show the minimum (bottom) and maximumm (top) price for the year. The horizontal line that cut through the box indicate the median for the year. The spade shape around the box indicate [outliers](https://github.com/dataglyder/Basic_Statistics_For_Data_Analysis.io). There seems to have been some relieve in the past: price drop in 2002 after the increase in 2001,it also drop in 2009 after a preceeding consistent hike in price and the most recent in hike was in 2022 before a bit of relief in 2023 and 2024. 
 
 ## Bar Chart
 I will like to summarise the average price per year with a bar cahrt.
@@ -105,7 +105,7 @@ ax.xlabel("years")
 ax.ylabel("Log of Average Prices $/gal")
 m.show()
 ```
-![bar]()
+![bar](https://github.com/dataglyder/Propane-Prices.io/blob/main/bar_chart.png)
 
 The prices are in log format so that the bars could be displayed distinctively. The real values could be estimated by taking the exponential of the displayed y-axis value. E.g. 1.2 as np.exp(1.2) is approximately 3.32
 
@@ -134,9 +134,9 @@ axes[1,1].set_ylabel(Logarithim of Average Price of Propane")
 m.tight_layout()
 m.show()
 ```
-
+![image](https://github.com/dataglyder/Propane-Prices.io/blob/main/summary.png)
 ## Statistical Analysis
-Let's take some sample and carryout statistical analysis on the sample. Year 2003 and 2004 are very recent; are there any sigificant difference between their price? Let's check with a T- statistics. You can check my write up on [traditional way of conductiong statistical analysis](). Let's quickly run it with Python here.
+Let's take some sample and carryout statistical analysis on the sample. Year 2003 and 2004 are very recent; are there any sigificant difference between their price? Let's check with a T- statistics. You can check my write up on [traditional way of conductiong statistical analysis](https://github.com/dataglyder/Basic_Statistics_For_Data_Analysis.io). Let's quickly run it with Python here.
 
 **Let's state our hypothesis**
 
@@ -272,7 +272,7 @@ price_target_future = 1.711 + 0.0021(783) = $3.36
 
 
 ## Conclusion 
-Yes! Consumers have enjoyed some reduction in price after increment according to this analyssis and maybe possibly in the futrue. Price is expected to flunctuate as days pass by; the estimates into the future are just guide into what is expected, there is no guanratee that price will increase linearly but training our model can help it prepare for any future data. 
+Yes! Historically, consumers have enjoyed some reduction in price after increment according to this analysis and maybe possibly in the futrue. Price is expected to flunctuate as days pass by; the estimates into the future are just guide into what are expected, there is no guanratee that price will increase linearly but training our model can help it prepare for any future data. 
 
 
  
